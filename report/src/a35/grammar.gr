@@ -1,0 +1,50 @@
+%token WORD
+%token INT
+%token FLOAT
+
+%%
+
+list:
+	plain
+|
+	separated
+|
+	// empty
+;
+
+plain:
+	plain
+	listtoken
+|
+	listtoken
+;
+
+separated:
+	sepstart
+	sepend
+;
+
+sepend:
+	sepend
+	septoken
+|
+	// empty
+;
+
+sepstart:
+	listtoken
+	septoken
+;
+
+septoken:
+	','
+	listtoken
+;
+
+listtoken:
+	WORD
+|
+	INT
+|
+	FLOAT
+;

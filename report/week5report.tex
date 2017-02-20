@@ -1,0 +1,61 @@
+\documentclass[11pt]{article}
+
+\usepackage{times}
+\usepackage[english]{babel}
+
+% -----------------------------------------------
+% especially use this for you code
+% -----------------------------------------------
+
+\usepackage{courier}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{tabularx}
+\usepackage{graphicx}
+
+\definecolor{Gray}{gray}{0.95}
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\lstset{language=C++,
+	basicstyle = \normalsize\ttfamily,   % the size and fonts that are used
+	tabsize = 2,                    % sets default tabsize
+	breaklines = true,              % sets automatic line breaking
+	keywordstyle=\color{blue}\ttfamily,
+	stringstyle=\color{red}\ttfamily,
+	commentstyle=\color{mygreen}\ttfamily,
+	numbers=left,
+	keepspaces=true,
+	showspaces=false,
+	showstringspaces=false,
+}
+
+\begin{document}
+
+\title{Programming in C/C++ \\
+       Exercises set five: grammatical parsers
+}
+\date{\today}
+\author{Christiaan Steenkist \\
+Jaime Betancor Valado \\
+Remco Bos \\
+}
+
+\maketitle
+\section*{Exercise 35, separated lists}
+We fixed the list grammar so it does what we want it to.
+
+\subsection*{Design}
+To accomodate multiple datatypes we use listtokens instead of WORDs.
+To allow empty lists, lists can exist out of nothing (empty OR).
+Because a list with one item can't be distinguished as a separated list we just count it as a normal list.
+A separated list is thus counted as \texttt{[listtoken ',' listtoken]} with optional repetition of \texttt{[listtoken ',']}.
+We abbreviated these nonterminals as \texttt{sepstart} and \texttt{sepend}.
+To simplify some more we defined \texttt{[listtoken ',']} as \texttt{septoken}.
+
+\subsection*{Code listings}
+\lstinputlisting[caption = grammar.gr]{src/a35/grammar.gr}
+
+\end{document}
