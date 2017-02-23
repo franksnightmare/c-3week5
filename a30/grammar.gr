@@ -20,7 +20,7 @@ input:
 line:   
         '\n'
 | 
-        exp '\n'  
+        expr '\n'  
         { 
             std::cout << "\t" << $1 << '\n';
         }
