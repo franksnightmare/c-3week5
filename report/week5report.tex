@@ -44,6 +44,69 @@ Remco Bos \\
 }
 
 \maketitle
+\section*{Exercise 30, calculator}
+We got a calculator grammar.
+
+\subsection*{Code listings}
+\lstinputlisting[caption = grammar.gr]{src/a30/grammar.gr}
+
+\section*{Exercise 31, conflicts}
+We fixed numerous conflicts.
+
+\subsection*{First grammar}
+The first revision of the grammar solves the reduce/reduce conflicts that are caused by the \texttt{NUMBER} branches in the \texttt{expr} and \texttt{number} nonterminals. To solve this we removed the \texttt{expr} case because it is already represented in \texttt{number}.
+
+\begin{lstlisting}
+%token NUMBER
+
+%%
+
+expr:
+    number
+|
+    expr '+' expr
+|
+    expr '-' expr
+|
+	// empty
+;
+
+number:
+    NUMBER
+;
+\end{lstlisting}
+
+\subsection*{Second grammar}
+In this grammar we also solved the shift/reduce conflicts which were caused because '+' and '-' have equal priority and no explicitly specified resolution for these types of conflicts. We set them to equal priority but reduce and not shift as is customary with these operators.
+
+\begin{lstlisting}
+%token NUMBER
+
+%left '+' '-'
+
+%%
+
+expr:
+    number
+|
+    expr '+' expr
+|
+    expr '-' expr
+|
+	// empty
+;
+
+number:
+    NUMBER
+;
+\end{lstlisting}
+
+\section*{Exercise 32, priorities}
+We added a new priority to a grammar.
+
+\subsection*{Code listings}
+\lstinputlisting[caption = grammar.gr]{src/a32/grammar.gr}
+
 \section*{Exercise 35, separated lists}
 We fixed the list grammar so it does what we want it to.
 
