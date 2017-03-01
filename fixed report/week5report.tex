@@ -1,0 +1,127 @@
+\documentclass[11pt]{article}
+
+\usepackage{times}
+\usepackage[english]{babel}
+
+% -----------------------------------------------
+% especially use this for you code
+% -----------------------------------------------
+
+\usepackage{courier}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{tabularx}
+\usepackage{graphicx}
+
+\definecolor{Gray}{gray}{0.95}
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\lstset{language=C++,
+	basicstyle = \normalsize\ttfamily,   % the size and fonts that are used
+	tabsize = 2,                    % sets default tabsize
+	breaklines = true,              % sets automatic line breaking
+	keywordstyle=\color{blue}\ttfamily,
+	stringstyle=\color{red}\ttfamily,
+	commentstyle=\color{mygreen}\ttfamily,
+	numbers=left,
+	keepspaces=true,
+	showspaces=false,
+	showstringspaces=false,
+}
+
+\begin{document}
+
+\title{Programming in C/C++ \\
+       Exercises set five: grammatical parsers
+}
+\date{\today}
+\author{Christiaan Steenkist \\
+Jaime Betancor Valado \\
+Remco Bos \\
+}
+
+\maketitle
+\section*{Exercise 30, calculator}
+We got a calculator grammar.
+
+\subsection*{Code listings}
+\lstinputlisting[caption = grammar.gr]{src/a30/grammar.gr}
+
+\section*{Exercise 31, conflicts}
+We fixed numerous conflicts.
+
+\subsection*{First grammar}
+The first revision of the grammar solves the reduce/reduce conflicts that are caused by the \texttt{NUMBER} branches in the \texttt{expr} and \texttt{number} nonterminals. To solve this we removed the \texttt{expr} case because it is already represented in \texttt{number}.
+
+\begin{lstlisting}
+%token NUMBER
+
+%%
+
+expr:
+    number
+|
+    expr '+' expr
+|
+    expr '-' expr
+|
+	// empty
+;
+
+number:
+    NUMBER
+;
+\end{lstlisting}
+
+\subsection*{Second grammar}
+In this grammar we also solved the shift/reduce conflicts which were caused because '+' and '-' have equal priority and no explicitly specified resolution for these types of conflicts. We set them to equal priority but reduce and not shift as is customary with these operators. Also to avoid very weird cases we modified the grammar a little.
+
+\begin{lstlisting}
+%token NUMBER
+
+%left '+' '-'
+
+%%
+expr:
+	exprpart
+|
+	// empty
+;
+
+exprpart:
+    number
+|
+    exprpart '+' exprpart
+|
+    exprpart '-' exprpart
+;
+
+number:
+    NUMBER
+;
+\end{lstlisting}
+
+\section*{Exercise 32, priorities}
+We added a new priority to a grammar.
+
+\subsection*{Code listings}
+\lstinputlisting[caption = grammar.gr]{src/a32/grammar.gr}
+
+\section*{Exercise 35, separated lists}
+We fixed the list grammar so it does what we want it to, the right way this time.
+
+\subsection*{Design}
+There are three kinds of list, plain, separated and empty.
+The types plain and separated have non-terminals but the empty list does not as this is not necessary.
+Each list can only have one token type in it which consists of \texttt{plain\_(token)\_seg} or \texttt{sep\_(token)\_seg} non-terminals that 
+we made for each token.
+Tokens are reduced into the proper list \texttt{seg}ment at the start of the list.
+A program could maintain this structure in the grammar file, adding or removing rules for certain tokens.
+
+\subsection*{Code listings}
+\lstinputlisting[caption = grammar.gr]{src/a35/grammar.gr}
+
+\end{document}

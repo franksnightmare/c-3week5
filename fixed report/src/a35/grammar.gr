@@ -1,0 +1,70 @@
+%token WORD
+%token INT
+%token FLOAT
+
+%scanner Scanner.h
+
+%%
+
+list:
+	plain
+|
+	separated
+|
+	// empty
+;
+
+// Plain list
+
+plain:
+	plain_word_seg
+|
+	plain_int_seg
+|
+	plain_float_seg
+;
+
+plain_word_seg:
+	plain_word_seg WORD
+|
+	WORD
+;
+
+plain_int_seg:
+	plain_int_seg INT
+|
+	INT
+;
+
+plain_float_seg:
+	plain_float_seg FLOAT
+|
+	FLOAT
+;
+
+// Separated list
+separated:
+	sep_word_seg WORD
+|
+	sep_int_seg INT
+|
+	sep_float_seg FLOAT
+;
+
+sep_word_seg:
+	sep_word_seg WORD ','
+|
+	WORD ','
+;
+
+sep_int_seg:
+	sep_int_seg INT ','
+|
+	INT ','
+;
+
+sep_float_seg:
+	sep_float_seg FLOAT ','
+|
+	FLOAT ','
+;
